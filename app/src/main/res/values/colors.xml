@@ -1,0 +1,9 @@
+<resources>
+    <color name="blue_primary">#1E88E5</color>
+    <color name="blue_dark">#0D47A1</color>
+    <color name="blue_accent">#42A5F5</color>
+    <color name="background_dark">#121212</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>
