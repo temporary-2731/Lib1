@@ -33,6 +33,7 @@ class MediaPipeline(
     private var frameCount = 0
     private var totalFrames = 0
     private var isCancelled = false
+    private var audioPassThroughStarted = false
 
     suspend fun convert(
         onProgress: (progress: Float, elapsedMs: Long, remainingMs: Long) -> Unit
@@ -43,10 +44,7 @@ class MediaPipeline(
             val startTime = System.currentTimeMillis()
             decoder?.start()
             encoder?.start()
-
-            if (audioTrackIdx >= 0 && audioOutputTrackIdx >= 0) {
-                feedAudioPassThrough()
-            }
+            // Do NOT feed audio here – wait until muxer is started
 
             while (!isCancelled) {
                 val inputBufferIndex = decoder?.dequeueInputBuffer(10_000L) ?: break
@@ -141,6 +139,24 @@ class MediaPipeline(
         shader = V360Shader().apply { build() }
     }
 
+    private fun startAudioPassThrough() {
+        if (audioPassThroughStarted) return
+        audioPassThroughStarted = true
+        if (audioTrackIdx >= 0 && audioOutputTrackIdx >= 0) {
+            CoroutineScope(Dispatchers.IO).launch {
+                val buf = ByteArray(65536)
+                while (!isCancelled) {
+                    val size = audioExtractor?.readSampleData(ByteBuffer.wrap(buf), 0) ?: break
+                    if (size < 0) break
+                    val info = MediaCodec.BufferInfo()
+                    info.set(0, size, audioExtractor?.sampleTime ?: 0, audioExtractor?.sampleFlags ?: 0)
+                    muxer?.writeSampleData(audioOutputTrackIdx, ByteBuffer.wrap(buf, 0, size), info)
+                    audioExtractor?.advance()
+                }
+            }
+        }
+    }
+
     private fun initEgl() {
         eglDisplay = EGL14.eglGetDisplay(EGL14.EGL_DEFAULT_DISPLAY)
         val version = IntArray(2)
@@ -188,20 +204,6 @@ class MediaPipeline(
         EGL14.eglSwapBuffers(eglDisplay, eglSurface)
     }
 
-    private fun feedAudioPassThrough() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val buf = ByteArray(65536)
-            while (!isCancelled) {
-                val size = audioExtractor?.readSampleData(ByteBuffer.wrap(buf), 0) ?: break
-                if (size < 0) break
-                val info = MediaCodec.BufferInfo()
-                info.set(0, size, audioExtractor?.sampleTime ?: 0, audioExtractor?.sampleFlags ?: 0)
-                muxer?.writeSampleData(audioOutputTrackIdx, ByteBuffer.wrap(buf, 0, size), info)
-                audioExtractor?.advance()
-            }
-        }
-    }
-
     private fun drainEncoder() {
         val info = MediaCodec.BufferInfo()
         while (true) {
@@ -224,6 +226,7 @@ class MediaPipeline(
                 if (newFormat != null) {
                     encoderTrackIdx = muxer?.addTrack(newFormat) ?: -1
                     muxer?.start()
+                    startAudioPassThrough()   // now the muxer is started, audio can flow
                 }
             }
         }
