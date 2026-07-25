@@ -16,10 +16,10 @@ class FilePickerDialog(
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val root = Environment.getExternalStorageDirectory()
-        val videoFiles = root.listFiles(FilenameFilter { _, name ->
+        val videoFiles: Array<File> = root.listFiles(FilenameFilter { _, name ->
             name.endsWith(".mp4") || name.endsWith(".mkv") || name.endsWith(".avi") ||
             name.endsWith(".mov") || name.endsWith(".ts") || name.endsWith(".m4v")
-        })?.sortedBy { it.name } ?: emptyArray()
+        }) ?: emptyArray()
 
         val fileNames = videoFiles.map { it.name }
 
