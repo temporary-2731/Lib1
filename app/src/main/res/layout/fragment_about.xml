@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="?android:colorBackground"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:text="VF - VR to Flat Video Converter"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+    <TextView
+        android:text="This app converts 360° VR (equirectangular) videos to standard flat perspective videos with various quality presets. Supports pause/resume and chunked processing."
+        android:textColor="?attr/colorOnSurface"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>
