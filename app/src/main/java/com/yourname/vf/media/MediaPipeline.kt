@@ -1,5 +1,6 @@
 package com.yourname.vf.media
 
+import android.graphics.SurfaceTexture
 import android.media.*
 import android.opengl.*
 import android.view.Surface
@@ -145,7 +146,7 @@ class MediaPipeline(
         val version = IntArray(2)
         EGL14.eglInitialize(eglDisplay, version, 0, version, 1)
         val configAttribs = intArrayOf(
-            EGL14.EGL_RENDERABLE_TYPE, EGLExt.EGL_OPENGL_ES2_BIT,
+            EGL14.EGL_RENDERABLE_TYPE, EGL14.EGL_OPENGL_ES2_BIT,
             EGL14.EGL_RED_SIZE, 8, EGL14.EGL_GREEN_SIZE, 8,
             EGL14.EGL_BLUE_SIZE, 8, EGL14.EGL_ALPHA_SIZE, 8,
             EGL14.EGL_NONE
@@ -153,7 +154,7 @@ class MediaPipeline(
         val configs = arrayOfNulls<EGLConfig>(1)
         EGL14.eglChooseConfig(eglDisplay, configAttribs, 0, configs, 0, 1, IntArray(1), 0)
         eglContext = EGL14.eglCreateContext(eglDisplay, configs[0], EGL14.EGL_NO_CONTEXT,
-            intArrayOf(EGLExt.EGL_CONTEXT_CLIENT_VERSION, 2, EGL14.EGL_NONE), 0)
+            intArrayOf(EGL14.EGL_CONTEXT_CLIENT_VERSION, 2, EGL14.EGL_NONE), 0)
         eglSurface = EGL14.eglCreateWindowSurface(eglDisplay, configs[0], encoderSurface,
             intArrayOf(EGL14.EGL_NONE), 0)
         EGL14.eglMakeCurrent(eglDisplay, eglSurface, eglSurface, eglContext)
@@ -219,8 +220,11 @@ class MediaPipeline(
                 encoder?.releaseOutputBuffer(outIndex, false)
                 if (info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM != 0) break
             } else if (outIndex == MediaCodec.INFO_OUTPUT_FORMAT_CHANGED) {
-                encoderTrackIdx = muxer?.addTrack(encoder?.outputFormat) ?: -1
-                muxer?.start()
+                val newFormat = encoder?.outputFormat
+                if (newFormat != null) {
+                    encoderTrackIdx = muxer?.addTrack(newFormat) ?: -1
+                    muxer?.start()
+                }
             }
         }
     }
