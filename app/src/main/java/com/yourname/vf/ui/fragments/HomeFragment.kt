@@ -13,7 +13,7 @@ import com.yourname.vf.R
 import com.yourname.vf.databinding.FragmentHomeBinding
 import com.yourname.vf.model.ConversionState
 import com.yourname.vf.service.VideoConverterService
-import com.yourname.vf.utils.FileUtil
+import com.yourname.vf.ui.dialogs.FilePickerDialog
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private var _binding: FragmentHomeBinding? = null
@@ -23,12 +23,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _binding = FragmentHomeBinding.bind(view)
 
+        // Custom file picker – no system file manager
         binding.cardPickVideo.setOnClickListener {
-            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "video/*"
-            }
-            startActivityForResult(intent, REQUEST_VIDEO)
+            FilePickerDialog { path ->
+                selectedVideoPath = path
+                // Optionally show the selected file name
+                // binding.tvSelectedFile.text = File(path).name
+            }.show(parentFragmentManager, "filePicker")
         }
 
         binding.spinnerMethod.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -76,6 +77,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }
     }
 
+    // rest of the class unchanged (getConversionParams etc.)
     private fun getConversionParams(method: String): List<Any> {
         when (method) {
             "Normal" -> return listOf(23, "medium", 1280, 720, 0f, 0f, 0f, 100f)
@@ -109,21 +111,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return listOf(23, "medium", 1280, 720, 0f, 0f, 0f, 100f)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_VIDEO && resultCode == Activity.RESULT_OK) {
-            data?.data?.let { uri ->
-                selectedVideoPath = FileUtil.getPath(requireContext(), uri) ?: uri.toString()
-            }
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val REQUEST_VIDEO = 1001
     }
 }
