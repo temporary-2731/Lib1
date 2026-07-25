@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="?attr/colorBackground"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:text="Theme"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="18sp"/>
+    <RadioGroup
+        android:id="@+id/radio_theme"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RadioButton android:id="@+id/radio_dark_blue" android:text="Dark Blue/Black" android:textColor="?attr/colorOnSurface"/>
+        <RadioButton android:id="@+id/radio_pure_black" android:text="Pure Black" android:textColor="?attr/colorOnSurface"/>
+        <RadioButton android:id="@+id/radio_blue" android:text="Blue" android:textColor="?attr/colorOnSurface"/>
+        <RadioButton android:id="@+id/radio_white" android:text="White" android:textColor="?attr/colorOnSurface"/>
+    </RadioGroup>
+
+    <TextView
+        android:text="Output Storage Location"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="18sp"
+        android:layout_marginTop="24dp"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_output_path"
+            android:hint="/storage/emulated/0/VFOutput"
+            android:textColor="?attr/colorOnSurface"
+            android:backgroundTint="@color/blue_accent"
+            android:layout_width="0dp"
+            android:layout_weight="1"/>
+        <Button
+            android:id="@+id/btn_browse_folder"
+            android:text="Browse"
+            android:layout_width="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>
