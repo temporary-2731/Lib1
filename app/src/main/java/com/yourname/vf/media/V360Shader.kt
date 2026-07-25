@@ -3,7 +3,8 @@ package com.yourname.vf.media
 import android.opengl.GLES20
 
 class V360Shader {
-    private var program = 0
+    var program = 0
+        private set
 
     private val vertexShaderCode = """
         attribute vec4 aPosition;
@@ -19,27 +20,16 @@ class V360Shader {
         precision mediump float;
         varying vec2 vTexCoord;
         uniform sampler2D uTexture;
-        uniform vec2 uInputSize;   // width, height of input equirect
-        uniform vec2 uOutputSize;  // width, height of output flat
+        uniform vec2 uInputSize;
+        uniform vec2 uOutputSize;
         uniform float uYaw, uPitch, uRoll, uFov;
 
         const float PI = 3.14159265359;
 
-        // Convert equirect UV to 3D direction
-        vec3 uvToDirection(vec2 uv) {
-            float lon = (uv.x - 0.5) * 2.0 * PI;       // -pi to pi
-            float lat = (0.5 - uv.y) * PI;             // pi/2 to -pi/2
-            return vec3(cos(lat) * cos(lon), sin(lat), cos(lat) * sin(lon));
-        }
-
-        // Rotate vector by yaw/pitch/roll (simplified: only yaw and pitch for now)
         vec3 rotate(vec3 dir, float yaw, float pitch, float roll) {
-            // Yaw (around Y)
             float cosY = cos(yaw * PI / 180.0);
             float sinY = sin(yaw * PI / 180.0);
             dir = vec3(dir.x * cosY + dir.z * sinY, dir.y, -dir.x * sinY + dir.z * cosY);
-
-            // Pitch (around X)
             float cosP = cos(pitch * PI / 180.0);
             float sinP = sin(pitch * PI / 180.0);
             dir = vec3(dir.x, dir.y * cosP - dir.z * sinP, dir.y * sinP + dir.z * cosP);
@@ -47,19 +37,13 @@ class V360Shader {
         }
 
         void main() {
-            // Compute camera ray direction from output UV and FOV
-            float f = 1.0 / tan(uFov * PI / 360.0); // focal length
-            vec2 ndc = (vTexCoord - 0.5) * 2.0;     // -1..1
+            float f = 1.0 / tan(uFov * PI / 360.0);
+            vec2 ndc = (vTexCoord - 0.5) * 2.0;
             vec3 dir = normalize(vec3(ndc.x, ndc.y, f));
-
-            // Rotate by yaw/pitch/roll to get world direction
             dir = rotate(dir, uYaw, uPitch, uRoll);
-
-            // Convert world direction back to equirect UV
             float lat = asin(dir.y);
-            float lon = atan(dir.z, dir.x);   // range -pi..pi
+            float lon = atan(dir.z, dir.x);
             vec2 equiUV = vec2(lon / (2.0 * PI) + 0.5, 0.5 - lat / PI);
-
             gl_FragColor = texture2D(uTexture, equiUV);
         }
     """.trimIndent()
@@ -67,12 +51,12 @@ class V360Shader {
     private var aPosition = 0
     private var aTexCoord = 0
     private var uTexture = 0
-    var uInputSize = 0
-    var uOutputSize = 0
-    var uYaw = 0
-    var uPitch = 0
-    var uRoll = 0
-    var uFov = 0
+    private var uInputSize = 0
+    private var uOutputSize = 0
+    private var uYaw = 0
+    private var uPitch = 0
+    private var uRoll = 0
+    private var uFov = 0
 
     fun build() {
         val vertexShader = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
