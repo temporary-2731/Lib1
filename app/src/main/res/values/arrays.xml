@@ -1,0 +1,14 @@
+<resources>
+    <string-array name="methods">
+        <item>Normal</item>
+        <item>Time Intensive</item>
+        <item>Fast</item>
+        <item>Manual</item>
+    </string-array>
+    <string-array name="time_intensive_levels">
+        <item>Level 1 (Standard Quality)</item>
+        <item>Level 2 (High Quality)</item>
+        <item>Level 3 (Very High Quality)</item>
+        <item>Level 4 (Ultimate Quality)</item>
+    </string-array>
+</resources>
