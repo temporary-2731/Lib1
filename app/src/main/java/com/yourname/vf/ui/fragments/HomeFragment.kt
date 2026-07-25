@@ -53,14 +53,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 totalChunks = 0,
                 completedChunks = emptyList(),
                 currentChunkIndex = 0,
-                crf = params.first,
-                preset = params.second,
-                resolutionWidth = params.third,
-                resolutionHeight = params.fourth,
-                yaw = params.fifth,
-                pitch = params.sixth,
-                roll = params.seventh,
-                fov = params.eighth,
+                crf = params[0] as Int,
+                preset = params[1] as String,
+                resolutionWidth = params[2] as Int,
+                resolutionHeight = params[3] as Int,
+                yaw = params[4] as Float,
+                pitch = params[5] as Float,
+                roll = params[6] as Float,
+                fov = params[7] as Float,
                 segmentDurationSec = 60
             )
             val intent = Intent(requireContext(), VideoConverterService::class.java).apply {
