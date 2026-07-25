@@ -35,7 +35,9 @@
                     android:text="Choose VR Video"
                     android:textColor="@color/blue_accent"
                     android:textSize="18sp"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -43,7 +45,10 @@
             android:text="Conversion Type"
             android:textColor="?attr/colorOnSurface"
             android:textSize="16sp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <Spinner
             android:id="@+id/spinner_method"
             android:entries="@array/methods"
@@ -55,19 +60,31 @@
             android:id="@+id/layout_time_intensive"
             android:orientation="vertical"
             android:visibility="gone"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
             <TextView
                 android:text="Select Quality Level"
                 android:textColor="?attr/colorOnSurface"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
             <RadioGroup
                 android:id="@+id/radio_time_level"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <RadioButton android:text="Level 1 (Standard)" android:textColor="?attr/colorOnSurface"/>
-                <RadioButton android:text="Level 2 (High)" android:textColor="?attr/colorOnSurface"/>
-                <RadioButton android:text="Level 3 (Very High)" android:textColor="?attr/colorOnSurface"/>
-                <RadioButton android:text="Level 4 (Ultimate)" android:textColor="?attr/colorOnSurface"/>
+                <RadioButton android:text="Level 1 (Standard)" android:textColor="?attr/colorOnSurface"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RadioButton android:text="Level 2 (High)" android:textColor="?attr/colorOnSurface"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RadioButton android:text="Level 3 (Very High)" android:textColor="?attr/colorOnSurface"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <RadioButton android:text="Level 4 (Ultimate)" android:textColor="?attr/colorOnSurface"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
             </RadioGroup>
         </LinearLayout>
 
@@ -75,16 +92,34 @@
             android:id="@+id/layout_manual"
             android:orientation="vertical"
             android:visibility="gone"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <EditText android:id="@+id/et_crf" android:hint="CRF (0-51)" android:text="23" android:inputType="number" android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"/>
-            <EditText android:id="@+id/et_preset" android:hint="preset (ultrafast..veryslow)" android:text="medium" android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"/>
-            <EditText android:id="@+id/et_width" android:hint="Width" android:text="1280" android:inputType="number" android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"/>
-            <EditText android:id="@+id/et_height" android:hint="Height" android:text="720" android:inputType="number" android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"/>
-            <EditText android:id="@+id/et_yaw" android:hint="Yaw" android:text="0" android:inputType="numberDecimal" android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"/>
-            <EditText android:id="@+id/et_pitch" android:hint="Pitch" android:text="0" android:inputType="numberDecimal" android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"/>
-            <EditText android:id="@+id/et_roll" android:hint="Roll" android:text="0" android:inputType="numberDecimal" android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"/>
-            <EditText android:id="@+id/et_fov" android:hint="FOV" android:text="100" android:inputType="numberDecimal" android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"/>
+            <EditText android:id="@+id/et_crf" android:hint="CRF (0-51)" android:text="23" android:inputType="number"
+                android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <EditText android:id="@+id/et_preset" android:hint="preset (ultrafast..veryslow)" android:text="medium"
+                android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <EditText android:id="@+id/et_width" android:hint="Width" android:text="1280" android:inputType="number"
+                android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <EditText android:id="@+id/et_height" android:hint="Height" android:text="720" android:inputType="number"
+                android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <EditText android:id="@+id/et_yaw" android:hint="Yaw" android:text="0" android:inputType="numberDecimal"
+                android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <EditText android:id="@+id/et_pitch" android:hint="Pitch" android:text="0" android:inputType="numberDecimal"
+                android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <EditText android:id="@+id/et_roll" android:hint="Roll" android:text="0" android:inputType="numberDecimal"
+                android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
+            <EditText android:id="@+id/et_fov" android:hint="FOV" android:text="100" android:inputType="numberDecimal"
+                android:textColor="?attr/colorOnSurface" android:backgroundTint="@color/blue_accent"
+                android:layout_width="match_parent" android:layout_height="wrap_content"/>
         </LinearLayout>
 
         <Button
